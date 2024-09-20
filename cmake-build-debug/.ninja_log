@@ -1,0 +1,14 @@
+# ninja log v6
+2	408	7485085026510960	build.ninja	e2a07e5f058b238
+2	5072	7485085441598775	_deps/googletest-build/googletest/CMakeFiles/gtest.dir/src/gtest-all.cc.obj	3e441581b42e6b53
+5076	7504	7485085492335386	lib/libgtest.a	edf355e4a11090ee
+11	884	7485085517474391	CMakeFiles/main.dir/main.cpp.obj	299b024d8f9b1eb6
+7	920	7485085517434333	_deps/googletest-build/googletest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.obj	45c7a5e8a8013550
+921	967	7485085526561656	lib/libgtest_main.a	dea882fa45b6dcfa
+967	1144	7485085528757403	main.exe	1053af6f7df839f8
+967	1144	7485085528757403	main[1]_tests.cmake	1053af6f7df839f8
+967	1144	7485085528757403	C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/main[1]_tests.cmake	1053af6f7df839f8
+7	936	7485087523206876	CMakeFiles/main.dir/main.cpp.obj	299b024d8f9b1eb6
+937	3751	7485087560606546	main.exe	1053af6f7df839f8
+937	3751	7485087560606546	main[1]_tests.cmake	1053af6f7df839f8
+937	3751	7485087560606546	C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/main[1]_tests.cmake	1053af6f7df839f8

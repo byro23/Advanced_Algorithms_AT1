@@ -1,0 +1,7 @@
+add_test([=[MathTest.Addition]=]  C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/main.exe [==[--gtest_filter=MathTest.Addition]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[MathTest.Addition]=]  PROPERTIES WORKING_DIRECTORY C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[StringTest.CompareStrings]=]  C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/main.exe [==[--gtest_filter=StringTest.CompareStrings]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[StringTest.CompareStrings]=]  PROPERTIES WORKING_DIRECTORY C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[FailingTest.IntentionalFailure]=]  C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/main.exe [==[--gtest_filter=FailingTest.IntentionalFailure]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[FailingTest.IntentionalFailure]=]  PROPERTIES WORKING_DIRECTORY C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  main_TESTS MathTest.Addition StringTest.CompareStrings FailingTest.IntentionalFailure)
