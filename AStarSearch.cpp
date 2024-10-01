@@ -11,7 +11,7 @@
 #include <stack>
 #include <utility>
 #include <vector>
-#include <climits>
+
 
 struct Cell {
     int parent_i, parent_j;
@@ -49,14 +49,14 @@ std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& 
     std::stack<std::pair<int, int>> pathStack;
 
     while (!(cellDetails[row][col].parent_i == row && cellDetails[row][col].parent_j == col)) {
-        pathStack.push({row, col});
+        pathStack.emplace(row, col);
         int temp_row = cellDetails[row][col].parent_i;
         int temp_col = cellDetails[row][col].parent_j;
         row = temp_row;
         col = temp_col;
     }
 
-    pathStack.push({row, col});
+    pathStack.emplace(row, col);
 
     while (!pathStack.empty()) {
         path.push_back(pathStack.top());
@@ -67,8 +67,8 @@ std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& 
 }
 
 
-std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid, std::pair<int, int> src,
-                                             std::pair<int, int> dest) {
+std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid, std::pair<int, int>& src,
+                                             std::pair<int, int>& dest) {
     int rowSize  = grid.size();
     int colSize = grid[0].size(); // Guaranteed each row has the same number of columns
 
@@ -94,16 +94,6 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
     std::vector<std::vector<Cell>> cellDetails(rowSize, std::vector<Cell>(colSize));
 
     int i, j;
-
-    for(i = 0; i < rowSize; i++) {
-        for(j = 0; j < colSize; j++) {
-            cellDetails[i][j].f = 0.0;
-            cellDetails[i][j].g = 0.0;
-            cellDetails[i][j].h = 0.0;
-            cellDetails[i][j].parent_i = i;
-            cellDetails[i][j].parent_j = j;
-        }
-    }
 
     // Initialise the parameters of the starting node
     i = src.first, j = src.second;
