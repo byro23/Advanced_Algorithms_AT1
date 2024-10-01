@@ -18,6 +18,8 @@ enable_testing()
 add_executable(
         main
         main.cpp
+        AStarSearch.cpp
+        AStarSearch.h
 )
 target_link_libraries(
         main

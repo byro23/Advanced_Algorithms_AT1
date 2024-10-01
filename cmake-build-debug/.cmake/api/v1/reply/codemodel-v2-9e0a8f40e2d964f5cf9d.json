@@ -172,7 +172,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "main::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-main-Debug-cc8ffdd4e2f8910e8119.json",
+					"jsonFile" : "target-main-Debug-15fd3fc9d62787c7d049.json",
 					"name" : "main",
 					"projectIndex" : 0
 				}
@@ -188,6 +188,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 6
+		"minor" : 7
 	}
 }
