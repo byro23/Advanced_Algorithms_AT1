@@ -11,10 +11,16 @@
 #include <stack>
 #include <utility>
 #include <vector>
+#include <climits>
 
 struct Cell {
     int parent_i, parent_j;
     double f,g,h;
+
+    Cell() {
+        f = g = h = std::numeric_limits<double>::max();
+        parent_i = parent_j = -1;
+    }
 
 };
 
@@ -61,10 +67,10 @@ std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& 
 }
 
 
-std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int> > grid, std::pair<int, int> src,
+std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid, std::pair<int, int> src,
                                              std::pair<int, int> dest) {
     int rowSize  = grid.size();
-    int colSize = grid[0].size(); // Guaranteed each r
+    int colSize = grid[0].size(); // Guaranteed each row has the same number of columns
 
     if(!isValid(src.first, src.second, rowSize, colSize) || !isValid(dest.first, dest.second, rowSize, colSize)) {
         std::cout << "Source or destination is invalid\n";
@@ -91,11 +97,11 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int> > grid
 
     for(i = 0; i < rowSize; i++) {
         for(j = 0; j < colSize; j++) {
-            cellDetails[i][j].f = FLT_MAX;
-            cellDetails[i][j].g = FLT_MAX;
-            cellDetails[i][j].h = FLT_MAX;
-            cellDetails[i][j].parent_i = -1;
-            cellDetails[i][j].parent_j = -1;
+            cellDetails[i][j].f = 0.0;
+            cellDetails[i][j].g = 0.0;
+            cellDetails[i][j].h = 0.0;
+            cellDetails[i][j].parent_i = i;
+            cellDetails[i][j].parent_j = j;
         }
     }
 
@@ -108,10 +114,8 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int> > grid
     cellDetails[i][j].parent_j = j;
 
     std::priority_queue<std::pair<double, std::pair<int, int>>, std::vector<std::pair<double, std::pair<int, int>>>, std::greater<>> openList;
-
     // Push the starting cell onto the open list
     openList.push({0.0, {i, j}});
-    bool foundDest = false;
 
     // Directions for all possible 8 moves (N, S, E, W, NE, NW, SE, SW)
     int rowDir[] = {-1, 1, 0, 0, -1, -1, 1, 1};
@@ -131,6 +135,7 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int> > grid
             int newCol = j + colDir[dir];
 
             if(isValid(newRow, newCol, rowSize, colSize)) {
+                // If destination cell is reached
                 if(isDestination({newRow, newCol}, dest)) {
                     cellDetails[newRow][newCol].parent_i = i;
                     cellDetails[newRow][newCol].parent_j = j;
@@ -138,12 +143,14 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int> > grid
                     return tracePath(cellDetails, dest);
                 }
 
+                // Only process unblocked and unvisited cells
                 if(!closedList[newRow][newCol] && isUnblocked(grid, newRow, newCol))  {
                     double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414);
                     double hNew = calculateHValue(newRow, newCol, dest);
                     double fNew = gNew + hNew;
 
-                    if(cellDetails[newRow][newCol].f == FLT_MAX || cellDetails[newRow][newCol].f > fNew) {
+                    // If the new path is better, update cell details
+                    if(cellDetails[newRow][newCol].f > fNew) {
                         openList.push({fNew, {newRow, newCol}});
                         cellDetails[newRow][newCol].f = fNew;
                         cellDetails[newRow][newCol].g = gNew;
