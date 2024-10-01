@@ -39,6 +39,7 @@ bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) 
 
 double calculateHValue(int row, int col, std::pair<int, int> dest) {
     // Using Euclidean distance as a heuristic (can switch to Manhattan distance if diagonal moves aren't allowed)
+    // Chosen due to suitability for diagonal movements
     return std::sqrt((row - dest.first) * (row - dest.first) + (col - dest.second) * (col - dest.second));
 }
 
