@@ -24,21 +24,25 @@ struct Cell {
 
 };
 
+// Used to check if the provided coordinates are valid
 bool isValid(int row, int col, int rowLength, int colLength) {
 
     return (row >= 0) && (row < rowLength) && (col >= 0) && (col < colLength);
 }
 
+// Used to check if the provided coordinate is unblocked
 bool isUnblocked(std::vector<std::vector<int>>& grid, int row, int col) {
     return grid[row][col] == 1;
 }
 
+// Returns true once the source arrives at the destination
 bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) {
     return source.first == destination.first && source.second == destination.second;
 }
 
+// The Euclidean distance heuristic used to estimate the distance of the current node from it's goal
 double calculateHValue(int row, int col, std::pair<int, int> dest) {
-    // Using Euclidean distance as a heuristic (can switch to Manhattan distance if diagonal moves aren't allowed)
+    // Using Euclidean distance as a heuristic
     // Chosen due to suitability for diagonal movements
     return std::sqrt((row - dest.first) * (row - dest.first) + (col - dest.second) * (col - dest.second));
 }
@@ -88,7 +92,7 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
         return {};
     }
 
-    // 2d array used to store the details of each cell
+    // Stores visited nodes
     std::vector<std::vector<bool>> closedList(rowSize, std::vector<bool>(colSize, false));
 
     // Cell Details for each cell
@@ -136,8 +140,9 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
 
                 // Only process unblocked and unvisited cells
                 if(!closedList[newRow][newCol] && isUnblocked(grid, newRow, newCol))  {
-                    double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414);
-                    double hNew = calculateHValue(newRow, newCol, dest);
+                    // Calculate f(n)
+                    double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414); // If a cardinal direction assign a weight of 1, else set a diagonal weight of approx. sqrt(2)
+                    double hNew = calculateHValue(newRow, newCol, dest); // Calculate heuristic value
                     double fNew = gNew + hNew;
 
                     // If the new path is better, update cell details
@@ -158,6 +163,6 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
     }
 
     std::cerr << "Failed to find the destination cell";
-    return {};
+    return {}; // Return empty path
 
 }
