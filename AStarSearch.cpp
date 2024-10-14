@@ -44,9 +44,13 @@ bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) 
 
 // Euclidean Distance heuristic
 double calculateHValue(int row, int col, std::pair<int, int> dest) {
-    // Using Euclidean distance as a heuristic (can switch to Manhattan distance if diagonal moves aren't allowed)
-    // Chosen due to suitability for diagonal movements
-    return std::sqrt((row - dest.first) * (row - dest.first) + (col - dest.second) * (col - dest.second));
+    int dx = std::abs(row - dest.first);
+    int dy = std::abs(col - dest.second);
+
+    double D = 1.0;           // Cost for orthogonal movement
+    double D_diagonal = 1.414; // Cost for diagonal movement
+
+    return D * std::max(dx, dy) + (D_diagonal - D) * std::min(dx, dy);
 }
 
 // Traces the path from the source to destination by using the parent cell values
@@ -96,10 +100,10 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
     }
 
     // 2d array used to store the details of each cell
-    std::vector<std::vector<bool>> closedList(rowSize, std::vector<bool>(colSize, false));
+    std::vector closedList(rowSize, std::vector<bool>(colSize, false));
 
     // Cell Details for each cell
-    std::vector<std::vector<Cell>> cellDetails(rowSize, std::vector<Cell>(colSize));
+    std::vector cellDetails(rowSize, std::vector<Cell>(colSize));
 
     int i, j;
 
