@@ -19,30 +19,37 @@ struct Cell {
 
     Cell() {
         f = g = h = std::numeric_limits<double>::max();
-        parent_i = parent_j = -1;
+        // F: Total Cost | G: Cost from source to current cell | H: Estimated cost from current cell to destination using heuristic
+        // Keeps track of current most efficient path to the cell
+
+        parent_i = parent_j = -1; // Coordinates of the parent cell in the path
     }
 
 };
 
+// Checks if the cell is valid
 bool isValid(int row, int col, int rowLength, int colLength) {
-
     return (row >= 0) && (row < rowLength) && (col >= 0) && (col < colLength);
 }
 
+// Checks if a cell is walkable
 bool isUnblocked(std::vector<std::vector<int>>& grid, int row, int col) {
     return grid[row][col] == 1;
 }
 
+// Checks if the destination cell has been reached
 bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) {
     return source.first == destination.first && source.second == destination.second;
 }
 
+// Euclidean Distance heuristic
 double calculateHValue(int row, int col, std::pair<int, int> dest) {
     // Using Euclidean distance as a heuristic (can switch to Manhattan distance if diagonal moves aren't allowed)
     // Chosen due to suitability for diagonal movements
     return std::sqrt((row - dest.first) * (row - dest.first) + (col - dest.second) * (col - dest.second));
 }
 
+// Traces the path from the source to destination by using the parent cell values
 std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, std::pair<int, int> dest) {
     std::vector<std::pair<int, int>> path;
     int row = dest.first;
@@ -104,11 +111,12 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
     cellDetails[i][j].parent_i = i;
     cellDetails[i][j].parent_j = j;
 
+    // Priority queue storing f-value and cell coordinates. Configured for cell with smallest f-value to be processed first
     std::priority_queue<std::pair<double, std::pair<int, int>>, std::vector<std::pair<double, std::pair<int, int>>>, std::greater<>> openList;
     // Push the starting cell onto the open list
     openList.push({0.0, {i, j}});
 
-    // Directions for all possible 8 moves (N, S, E, W, NE, NW, SE, SW)
+    // Directions for all 8 moves (N, S, E, W, NE, NW, SE, SW)
     int rowDir[] = {-1, 1, 0, 0, -1, -1, 1, 1};
     int colDir[] = {0, 0, 1, -1, 1, -1, 1, -1};
 
