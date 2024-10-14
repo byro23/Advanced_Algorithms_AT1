@@ -20,6 +20,25 @@ TEST(AStarSearchTest, OneValidPathSmallGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+TEST(AStarSearchTest, SmallGridTest2) {
+    std::vector<std::vector<int>> grid = {
+        {0,1,1,1,1,1},
+        {1,1,0,0,0,0},
+        {0,1,0,0,1,0},
+        {0,0,1,1,1,0}
+    };
+
+    std::pair<int, int> src = {0, 5};
+    std::pair<int, int> dest = {3, 4};
+
+    std::vector<std::pair<int, int>> expected_path = {
+        {0,5}, {0,4}, {0,3}, {0,2}, {1,1}, {2,1},
+        {3,2}, {3,3}, {3,4}
+    };
+
+    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
+}
+
 TEST(AStarSearchTest, OneValidPathLargeGridTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
