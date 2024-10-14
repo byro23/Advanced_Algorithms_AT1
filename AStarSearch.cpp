@@ -3,6 +3,7 @@
 //
 
 #include "AStarSearch.h"
+
 #include <cfloat>
 #include <cmath>
 #include <iostream>
@@ -10,7 +11,7 @@
 #include <stack>
 #include <utility>
 #include <vector>
-#include <unordered_set>
+
 
 struct Cell {
     int parent_i, parent_j;
@@ -23,6 +24,7 @@ struct Cell {
 
         parent_i = parent_j = -1; // Coordinates of the parent cell in the path
     }
+
 };
 
 // Checks if the cell is valid
@@ -42,6 +44,8 @@ bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) 
 
 // Euclidean Distance heuristic
 double calculateHValue(int row, int col, std::pair<int, int> dest) {
+    // Using Euclidean distance as a heuristic (can switch to Manhattan distance if diagonal moves aren't allowed)
+    // Chosen due to suitability for diagonal movements
     return std::sqrt((row - dest.first) * (row - dest.first) + (col - dest.second) * (col - dest.second));
 }
 
@@ -70,6 +74,7 @@ std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& 
     return path;
 }
 
+
 std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid, std::pair<int, int>& src,
                                              std::pair<int, int>& dest) {
     int rowSize  = grid.size();
@@ -90,8 +95,8 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
         return {};
     }
 
-    // Stores visited nodes using an unordered set
-    std::unordered_set<std::pair<int, int>, hash_pair> closedList;
+    // 2d array used to store the details of each cell
+    std::vector<std::vector<bool>> closedList(rowSize, std::vector<bool>(colSize, false));
 
     // Cell Details for each cell
     std::vector<std::vector<Cell>> cellDetails(rowSize, std::vector<Cell>(colSize));
@@ -121,9 +126,7 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
 
         i = current.second.first;
         j = current.second.second;
-
-        // Add to closed list
-        closedList.insert({i, j});
+        closedList[i][j] = true;
 
         for(int dir = 0; dir < 8; dir++) {
 
@@ -140,10 +143,9 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
                 }
 
                 // Only process unblocked and unvisited cells
-                if(closedList.find({newRow, newCol}) == closedList.end() && isUnblocked(grid, newRow, newCol))  {
-                    // Calculate f(n)
-                    double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414); // If a cardinal direction assign a weight of 1, else set a diagonal weight of approx. sqrt(2)
-                    double hNew = calculateHValue(newRow, newCol, dest); // Calculate heuristic value
+                if(!closedList[newRow][newCol] && isUnblocked(grid, newRow, newCol))  {
+                    double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414);
+                    double hNew = calculateHValue(newRow, newCol, dest);
                     double fNew = gNew + hNew;
 
                     // If the new path is better, update cell details
@@ -160,9 +162,10 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
 
         }
 
+
     }
 
     std::cerr << "Failed to find the destination cell";
-    return {}; // Return empty path
+    return {};
 
 }
