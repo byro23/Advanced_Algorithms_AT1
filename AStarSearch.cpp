@@ -4,6 +4,7 @@
 
 #include "AStarSearch.h"
 
+#include <algorithm>
 #include <cfloat>
 #include <cmath>
 #include <iostream>
@@ -13,6 +14,7 @@
 #include <vector>
 
 
+// Cell Data Structure
 struct Cell {
     int parent_i, parent_j;
     double f,g,h;
@@ -54,27 +56,21 @@ double calculateHValue(int row, int col, std::pair<int, int> dest) {
 }
 
 // Traces the path from the source to destination by using the parent cell values
-std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, std::pair<int, int> dest) {
+std::vector<std::pair<int, int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, std::pair<int, int> dest) {
     std::vector<std::pair<int, int>> path;
     int row = dest.first;
     int col = dest.second;
-    std::stack<std::pair<int, int>> pathStack;
 
     while (!(cellDetails[row][col].parent_i == row && cellDetails[row][col].parent_j == col)) {
-        pathStack.emplace(row, col);
+        path.emplace_back(row, col);
         int temp_row = cellDetails[row][col].parent_i;
         int temp_col = cellDetails[row][col].parent_j;
         row = temp_row;
         col = temp_col;
     }
+    path.emplace_back(row, col);  // Add the starting point
 
-    pathStack.emplace(row, col);
-
-    while (!pathStack.empty()) {
-        path.push_back(pathStack.top());
-        pathStack.pop();
-    }
-
+    std::reverse(path.begin(), path.end());
     return path;
 }
 
