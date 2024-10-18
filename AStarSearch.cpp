@@ -44,7 +44,7 @@ bool isDestination(const std::pair<int, int> &source, const std::pair<int, int> 
     return source.first == destination.first && source.second == destination.second;
 }
 
-// Euclidean Distance heuristic
+// Diagonal Distance Heuristic
 double calculateHValue(const int row, const int col, const std::pair<int, int> &dest) {
     int dx = std::abs(row - dest.first);
     int dy = std::abs(col - dest.second);

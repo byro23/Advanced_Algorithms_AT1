@@ -3,7 +3,7 @@
 #include <vector>
 #include <utility>
 
-// Test case for finding a valid path for a small grid with only one valid path
+// Test for small-sized grid with valid path
 TEST(AStarSearchTest, SmallGridTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1},
@@ -20,6 +20,7 @@ TEST(AStarSearchTest, SmallGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+// Test case for medium-sized grid with valid path
 TEST(AStarSearchTest, MediumGridPathTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1, 1, 1},
@@ -41,6 +42,7 @@ TEST(AStarSearchTest, MediumGridPathTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+// Test for large grid with valid path
 TEST(AStarSearchTest, LargeGridTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -69,7 +71,7 @@ TEST(AStarSearchTest, LargeGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
-
+// Test that evaluation function works correctly for straight-line shortest-paths
 TEST(AStarSearchTest, StraightLinePathTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1},
@@ -136,7 +138,7 @@ TEST(AStarSearchTest, InvalidDestinationTest) {
 }
 
 // Test case for invalid source or destination
-TEST(AStarSearchTest, InvalidSourceOrDestinationTest) {
+TEST(AStarSearchTest, InvalidSourceTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1},
         {1, 1, 1},
@@ -170,6 +172,22 @@ TEST(AStarSearchTest, NoValidPathTest) {
 
     // Construct an empty vector explicitly
     std::vector<std::pair<int, int>> expected_path;
+
+    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
+}
+
+TEST(AStarSearchTest, TieBreakingTest) {
+    std::vector<std::vector<int>> grid = {
+        {1, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    };
+
+    std::pair<int, int> src = {0, 0};
+    std::pair<int, int> dest = {2, 2};
+
+    // The path should prioritize diagonal movement for tie-breaking.
+    std::vector<std::pair<int, int>> expected_path = {{0, 0}, {1, 1}, {2, 2}};
 
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
