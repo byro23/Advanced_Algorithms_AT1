@@ -35,17 +35,17 @@ bool isValid(int row, int col, int rowLength, int colLength) {
 }
 
 // Checks if a cell is walkable
-bool isUnblocked(std::vector<std::vector<int>>& grid, int row, int col) {
+auto isUnblocked(const std::vector<std::vector<int> > &grid, const int row, const int col) -> bool {
     return grid[row][col] == 1;
 }
 
 // Checks if the destination cell has been reached
-bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) {
+bool isDestination(const std::pair<int, int> &source, const std::pair<int, int> &destination) {
     return source.first == destination.first && source.second == destination.second;
 }
 
 // Euclidean Distance heuristic
-double calculateHValue(int row, int col, std::pair<int, int> dest) {
+double calculateHValue(const int row, const int col, const std::pair<int, int> &dest) {
     int dx = std::abs(row - dest.first);
     int dy = std::abs(col - dest.second);
 
@@ -56,7 +56,7 @@ double calculateHValue(int row, int col, std::pair<int, int> dest) {
 }
 
 // Traces the path from the source to destination by using the parent cell values
-std::vector<std::pair<int, int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, std::pair<int, int> dest) {
+std::vector<std::pair<int, int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, const std::pair<int, int> &dest) {
     std::vector<std::pair<int, int>> path;
     int row = dest.first;
     int col = dest.second;
@@ -75,10 +75,11 @@ std::vector<std::pair<int, int>> tracePath(const std::vector<std::vector<Cell>>&
 }
 
 
-std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid, std::pair<int, int>& src,
-                                             std::pair<int, int>& dest) {
-    int rowSize  = grid.size();
-    int colSize = grid[0].size(); // Guaranteed each row has the same number of columns
+std::vector<std::pair<int, int>> aStarSearch(const std::vector<std::vector<int>>& grid, const std::pair<int, int>& src,
+                                             const std::pair<int, int>& dest) {
+
+    const int rowSize  = static_cast<int>(grid.size());
+    const int colSize = static_cast<int>(grid[0].size()); // Guaranteed each row has the same number of columns
 
     if(!isValid(src.first, src.second, rowSize, colSize) || !isValid(dest.first, dest.second, rowSize, colSize)) {
         std::cout << "Source or destination is invalid\n";
