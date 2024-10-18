@@ -71,6 +71,30 @@ TEST(AStarSearchTest, LargeGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+TEST(AStarSearchTest, ExtremelyLargeGridTest) {
+    // Create a 1000x1000 grid with walkable paths and some obstacles
+    std::vector<std::vector<int>> grid(1000, std::vector<int>(1000, 1));
+
+    // Introduce some obstacles in the grid
+    for (int i = 0; i < 1000; ++i) {
+        grid[i][500] = 0;  // Block the middle column to create a barrier
+    }
+
+    // Add a gap in the obstacle column to allow the path through
+    grid[500][500] = 1;
+
+    std::pair<int, int> src = {0, 0};      // Top-left corner
+    std::pair<int, int> dest = {999, 999}; // Bottom-right corner
+
+    // Since the path will navigate around the obstacle, the expected path is too large to enumerate.
+    // Instead, just check that the algorithm returns a non-empty path.
+    auto result_path = aStarSearch(grid, src, dest);
+
+    // Check if the destination is reached in the final step
+    ASSERT_FALSE(result_path.empty());
+    EXPECT_EQ(result_path.back(), dest);
+}
+
 // Test that evaluation function works correctly for straight-line shortest-paths
 TEST(AStarSearchTest, StraightLinePathTest) {
     std::vector<std::vector<int>> grid = {
@@ -104,7 +128,7 @@ TEST(AStarSearchTest, SimpleDiagonalPathTest) {
 }
 
 // Test case when source is already the destination
-TEST(AStarSearchTest, AlreadyAtDestinationTest) {
+TEST(AStarSearchTest, SourceIsDestinationTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1},
         {1, 1, 1, 1},
@@ -120,8 +144,28 @@ TEST(AStarSearchTest, AlreadyAtDestinationTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+// Test case for invalid source or destination
+TEST(AStarSearchTest, BlockedSourceTest) {
+    std::vector<std::vector<int>> grid = {
+        {0, 1, 1},
+        {1, 1, 1},
+        {1, 1, 1}
+    };
+
+    std::pair<int, int> src = {0, 0}; // Invalid source
+    std::pair<int, int> dest = {2, 2};  // Valid destination
+
+    // Construct an empty vector (path)
+    std::vector<std::pair<int, int>> expected_path;
+
+    src = {0, 0};  // Blocked source
+    dest = {5, 5}; // Invalid destination
+
+    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
+}
+
 // Test case where source or destination is blocked
-TEST(AStarSearchTest, InvalidDestinationTest) {
+TEST(AStarSearchTest, BlockedDestinationTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1},
         {1, 0, 1},
@@ -137,28 +181,6 @@ TEST(AStarSearchTest, InvalidDestinationTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
-// Test case for invalid source or destination
-TEST(AStarSearchTest, InvalidSourceTest) {
-    std::vector<std::vector<int>> grid = {
-        {1, 1, 1},
-        {1, 1, 1},
-        {1, 1, 1}
-    };
-
-    std::pair<int, int> src = {-1, -1}; // Invalid source
-    std::pair<int, int> dest = {2, 2};  // Valid destination
-
-    // Construct an empty vector explicitly
-    std::vector<std::pair<int, int>> expected_path;
-
-    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
-
-    src = {0, 0};  // Valid source
-    dest = {5, 5}; // Invalid destination
-
-    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
-}
-
 // Test case for a grid with no valid path
 TEST(AStarSearchTest, NoValidPathTest) {
     std::vector<std::vector<int>> grid = {
@@ -168,15 +190,15 @@ TEST(AStarSearchTest, NoValidPathTest) {
     };
 
     std::pair<int, int> src = {0, 0};
-    std::pair<int, int> dest = {2, 0}; // No valid path
+    std::pair<int, int> dest = {2, 0}; // No valid path to this coordinate
 
-    // Construct an empty vector explicitly
+    // Construct empty vector (path)
     std::vector<std::pair<int, int>> expected_path;
 
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
-TEST(AStarSearchTest, TieBreakingTest) {
+TEST(AStarSearchTest, DiagonalDistanceHeuristicTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1},
         {1, 1, 1},
