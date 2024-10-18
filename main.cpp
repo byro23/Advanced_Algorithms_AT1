@@ -4,7 +4,7 @@
 #include <utility>
 
 // Test case for finding a valid path for a small grid with only one valid path
-TEST(AStarSearchTest, OneValidPathSmallGridTest) {
+TEST(AStarSearchTest, SmallGridTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1},
         {1, 0, 0, 1},
@@ -20,7 +20,28 @@ TEST(AStarSearchTest, OneValidPathSmallGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
-TEST(AStarSearchTest, OneValidPathLargeGridTest) {
+TEST(AStarSearchTest, MediumGridPathTest) {
+    std::vector<std::vector<int>> grid = {
+        {1, 1, 1, 1, 1, 1},
+        {1, 0, 0, 1, 0, 1},
+        {1, 1, 1, 1, 0, 1},
+        {0, 0, 1, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 0, 1}
+    };
+
+    std::pair<int, int> src = {0, 0};
+    std::pair<int, int> dest = {5, 5};
+
+    std::vector<std::pair<int, int>> expected_path = {
+        {0, 0}, {1, 0}, {2, 1}, {3, 2}, {4, 3}, {4, 4},
+        {5, 5}
+    };
+
+    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
+}
+
+TEST(AStarSearchTest, LargeGridTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
         {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1},
@@ -48,6 +69,38 @@ TEST(AStarSearchTest, OneValidPathLargeGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+
+TEST(AStarSearchTest, StraightLinePathTest) {
+    std::vector<std::vector<int>> grid = {
+        {1, 1, 1, 1},
+        {0, 0, 0, 0},
+        {1, 1, 1, 1},
+        {0, 0, 0, 0}
+    };
+
+    std::pair<int, int> src = {0, 0};
+    std::pair<int, int> dest = {0, 3};
+
+    std::vector<std::pair<int, int>> expected_path = {{0, 0}, {0, 1}, {0, 2}, {0, 3}};
+
+    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
+}
+
+TEST(AStarSearchTest, SimpleDiagonalPathTest) {
+    std::vector<std::vector<int>> grid = {
+        {1, 0, 0},
+        {0, 1, 0},
+        {0, 0, 1}
+    };
+
+    std::pair<int, int> src = {0, 0};
+    std::pair<int, int> dest = {2, 2};
+
+    std::vector<std::pair<int, int>> expected_path = {{0, 0}, {1, 1}, {2, 2}};
+
+    EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
+}
+
 // Test case when source is already the destination
 TEST(AStarSearchTest, AlreadyAtDestinationTest) {
     std::vector<std::vector<int>> grid = {
@@ -66,7 +119,7 @@ TEST(AStarSearchTest, AlreadyAtDestinationTest) {
 }
 
 // Test case where source or destination is blocked
-TEST(AStarSearchTest, BlockedPathTest) {
+TEST(AStarSearchTest, InvalidDestinationTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1},
         {1, 0, 1},

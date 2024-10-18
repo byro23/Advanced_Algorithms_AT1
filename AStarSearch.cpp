@@ -4,6 +4,7 @@
 
 #include "AStarSearch.h"
 
+#include <algorithm>
 #include <cfloat>
 #include <cmath>
 #include <iostream>
@@ -13,6 +14,7 @@
 #include <vector>
 
 
+// Cell Data Structure
 struct Cell {
     int parent_i, parent_j;
     double f,g,h;
@@ -25,59 +27,59 @@ struct Cell {
         parent_i = parent_j = -1; // Coordinates of the parent cell in the path
     }
 
+};
+
 // Checks if the cell is valid
 bool isValid(int row, int col, int rowLength, int colLength) {
-
     return (row >= 0) && (row < rowLength) && (col >= 0) && (col < colLength);
 }
 
 // Checks if a cell is walkable
-bool isUnblocked(std::vector<std::vector<int>>& grid, int row, int col) {
+auto isUnblocked(const std::vector<std::vector<int> > &grid, const int row, const int col) -> bool {
     return grid[row][col] == 1;
 }
 
 // Checks if the destination cell has been reached
-bool isDestination(std::pair<int, int> source, std::pair<int, int> destination) {
+bool isDestination(const std::pair<int, int> &source, const std::pair<int, int> &destination) {
     return source.first == destination.first && source.second == destination.second;
 }
 
 // Euclidean Distance heuristic
-double calculateHValue(int row, int col, std::pair<int, int> dest) {
-    // Using Euclidean distance as a heuristic
-    // Chosen due to suitability for diagonal movements
-    return std::sqrt((row - dest.first) * (row - dest.first) + (col - dest.second) * (col - dest.second));
+double calculateHValue(const int row, const int col, const std::pair<int, int> &dest) {
+    int dx = std::abs(row - dest.first);
+    int dy = std::abs(col - dest.second);
+
+    double D = 1.0;           // Cost for orthogonal movement
+    double D_diagonal = 1.414; // Cost for diagonal movement
+
+    return D * std::max(dx, dy) + (D_diagonal - D) * std::min(dx, dy);
 }
 
 // Traces the path from the source to destination by using the parent cell values
-std::vector<std::pair<int,int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, std::pair<int, int> dest) {
+std::vector<std::pair<int, int>> tracePath(const std::vector<std::vector<Cell>>& cellDetails, const std::pair<int, int> &dest) {
     std::vector<std::pair<int, int>> path;
     int row = dest.first;
     int col = dest.second;
-    std::stack<std::pair<int, int>> pathStack;
 
     while (!(cellDetails[row][col].parent_i == row && cellDetails[row][col].parent_j == col)) {
-        pathStack.emplace(row, col);
+        path.emplace_back(row, col);
         int temp_row = cellDetails[row][col].parent_i;
         int temp_col = cellDetails[row][col].parent_j;
         row = temp_row;
         col = temp_col;
     }
+    path.emplace_back(row, col);  // Add the starting point
 
-    pathStack.emplace(row, col);
-
-    while (!pathStack.empty()) {
-        path.push_back(pathStack.top());
-        pathStack.pop();
-    }
-
+    std::reverse(path.begin(), path.end());
     return path;
 }
 
 
-std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid, std::pair<int, int>& src,
-                                             std::pair<int, int>& dest) {
-    int rowSize  = grid.size();
-    int colSize = grid[0].size(); // Guaranteed each row has the same number of columns
+std::vector<std::pair<int, int>> aStarSearch(const std::vector<std::vector<int>>& grid, const std::pair<int, int>& src,
+                                             const std::pair<int, int>& dest) {
+
+    const int rowSize  = static_cast<int>(grid.size());
+    const int colSize = static_cast<int>(grid[0].size()); // Guaranteed each row has the same number of columns
 
     if(!isValid(src.first, src.second, rowSize, colSize) || !isValid(dest.first, dest.second, rowSize, colSize)) {
         std::cout << "Source or destination is invalid\n";
@@ -94,11 +96,11 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
         return {};
     }
 
-    // Stores visited nodes
-    std::vector<std::vector<bool>> closedList(rowSize, std::vector<bool>(colSize, false));
+    // 2d array used to store the details of each cell
+    std::vector closedList(rowSize, std::vector<bool>(colSize, false));
 
     // Cell Details for each cell
-    std::vector<std::vector<Cell>> cellDetails(rowSize, std::vector<Cell>(colSize));
+    std::vector cellDetails(rowSize, std::vector<Cell>(colSize));
 
     int i, j;
 
@@ -143,9 +145,8 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
 
                 // Only process unblocked and unvisited cells
                 if(!closedList[newRow][newCol] && isUnblocked(grid, newRow, newCol))  {
-                    // Calculate f(n)
-                    double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414); // If a cardinal direction assign a weight of 1, else set a diagonal weight of approx. sqrt(2)
-                    double hNew = calculateHValue(newRow, newCol, dest); // Calculate heuristic value
+                    double gNew = cellDetails[i][j].g + (dir < 4 ? 1.0 : 1.414);
+                    double hNew = calculateHValue(newRow, newCol, dest);
                     double fNew = gNew + hNew;
 
                     // If the new path is better, update cell details
@@ -166,6 +167,6 @@ std::vector<std::pair<int, int>> aStarSearch(std::vector<std::vector<int>>& grid
     }
 
     std::cerr << "Failed to find the destination cell";
-    return {}; // Return empty path
+    return {};
 
 }
