@@ -2,7 +2,7 @@
  
 ## Prerequisites
 
-This project was developed entirely in the Clion IDE, which incorporates all of the prerequistes to run the project. 
+This project was developed entirely in the **Clion IDE**, which incorporates all of the prerequistes to run the project. 
 
 If Clion cannot be used, the prerequisites are:
 
@@ -13,4 +13,4 @@ If Clion cannot be used, the prerequisites are:
 
 To run the project, first ensure the project is configured through CMake. If using CLion, this will be done automatically. If configuring manually, please follow the available [CMake documentation.](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
 
-Once configured through CMake, build and run the project either through the executable or by clicking run (with main as configured target) on CLion.
+Once configured through CMake, build and run the project either through the executable or by clicking run (with main as target) on CLion.
