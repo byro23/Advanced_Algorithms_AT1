@@ -71,6 +71,7 @@ TEST(AStarSearchTest, LargeGridTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+// Test that the destination can be found in an extremely large search space
 TEST(AStarSearchTest, ExtremelyLargeGridTest) {
     // Create a 1000x1000 grid with walkable paths and some obstacles
     std::vector<std::vector<int>> grid(1000, std::vector<int>(1000, 1));
@@ -112,6 +113,7 @@ TEST(AStarSearchTest, StraightLinePathTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+// Test the heuristic will guide the algorithm down a diagonal path
 TEST(AStarSearchTest, SimpleDiagonalPathTest) {
     std::vector<std::vector<int>> grid = {
         {1, 0, 0},
@@ -198,6 +200,7 @@ TEST(AStarSearchTest, NoValidPathTest) {
     EXPECT_EQ(aStarSearch(grid, src, dest), expected_path);
 }
 
+// Test the heuristic favours a diagonal path over other valid paths
 TEST(AStarSearchTest, DiagonalDistanceHeuristicTest) {
     std::vector<std::vector<int>> grid = {
         {1, 1, 1},
