@@ -20,8 +20,8 @@ project(googletest-populate NONE)
 include(ExternalProject)
 ExternalProject_Add(googletest-populate
                      "UPDATE_DISCONNECTED" "False" "DOWNLOAD_EXTRACT_TIMESTAMP" "FALSE" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "URL" "https://github.com/google/googletest/archive/6dae7eb4a5c3a169f3e298392bff4680224aa94a.zip"
-                    SOURCE_DIR          "C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/_deps/googletest-src"
-                    BINARY_DIR          "C:/Users/byroj/CLionProjects/Advanced_Algorithms_AT1/cmake-build-debug/_deps/googletest-build"
+                    SOURCE_DIR          "/Users/byronlester/Documents/GitHub/Advanced_Algorithms_AT1/cmake-build-debug/_deps/googletest-src"
+                    BINARY_DIR          "/Users/byronlester/Documents/GitHub/Advanced_Algorithms_AT1/cmake-build-debug/_deps/googletest-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""
