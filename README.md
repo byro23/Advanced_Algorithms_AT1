@@ -4,7 +4,7 @@
 
 This project was developed entirely in the **Clion IDE**, which incorporates all of the prerequistes to run the project. 
 
-***Clion is highly recommended.***
+***Running in Clion is highly recommended.***
 
 If Clion cannot be used, the prerequisites are:
 
