@@ -1,6 +1,6 @@
 # Advanced Algorithms Assessment Task 1
 
-## [Github Repository Link](https://github.com/byro23/Advanced_Algorithms_AT1)
+## Github Repository Link: https://github.com/byro23/Advanced_Algorithms_AT1
 
 ## Chosen Algorithm: A* Search
  
