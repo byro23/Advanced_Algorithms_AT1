@@ -1,4 +1,6 @@
 # Advanced_Algorithms_AT1
+
+## Chosen Algorithm: A* Search
  
 ## Prerequisites
 
@@ -13,6 +15,7 @@ If Clion cannot be used, the prerequisites are:
 
 ## Instructions
 
-To run the project, first ensure the project is configured through CMake. If using CLion, this will be done automatically. If configuring manually, please follow the available [CMake documentation.](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
-
-Once configured through CMake, build and run the project either through the executable or by clicking run (with main as target) on CLion.
+1. Clone the project onto your machine
+2. Configure the project using CMake. If using Clion, this should be done automatically. If configuring manually, please follow the [CMake documentation.](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
+3. Once configured, run the project through the executable (if configured manually) or by clicking run with main as the target in Clion.
+4. The Google Tests should run, verifying the correctness of my A* Search implementation.
