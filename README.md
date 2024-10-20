@@ -1,4 +1,4 @@
-# Advanced_Algorithms_AT1
+# Advanced Algorithms Assessment Task 1
 
 ## Chosen Algorithm: A* Search
  
