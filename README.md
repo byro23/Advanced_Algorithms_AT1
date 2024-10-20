@@ -17,7 +17,7 @@ If Clion cannot be used, the prerequisites are:
 
 ## Instructions
 
-1. Clone the project onto your machine
+1. Clone the project onto your machine.
 2. Configure the project using CMake. If using Clion, this should be done automatically. If configuring manually, please follow the [CMake documentation.](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
 3. Once configured, build and run the project through the executable (if configured manually) or by clicking run with main as the target in Clion.
 4. The Google Tests should run, verifying the correctness of my A* Search implementation.
